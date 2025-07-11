@@ -1,7 +1,6 @@
 
 public class Main {
     public static void main(String[] args) {
-
         String original = "abcde FGHIJ ABC abc DEFG ";
 
         String s01 = original.toLowerCase();
@@ -27,7 +26,6 @@ public class Main {
         System.out.println("Last index of 'bc': " + j);
 
         String s = "potato apple lemon";
-
         String[] vect = s.split(" ");
 
         System.out.println(vect[0]);

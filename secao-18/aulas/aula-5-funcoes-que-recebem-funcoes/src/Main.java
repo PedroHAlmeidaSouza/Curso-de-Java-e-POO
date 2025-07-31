@@ -16,7 +16,7 @@ public class Main {
 
         ProductService ps = new ProductService();
 
-        double sum = ps.filteredSum(list);
+        double sum = ps.filteredSum(list, p -> p.getName().startsWith("T"));
 
         System.out.println("Sum = " + String.format("%.2f", sum));
 

@@ -8,19 +8,19 @@ public class Seller {
     private Integer id;
     private String name;
     private String email;
-    private Date birhtDate;
-    private Double salary;
+    private Date birthDate;
+    private Double baseSalary;
     private Department department;
 
     public Seller() {
     }
 
-    public Seller(Integer id, String name, String email, Date birhtDate, Double salary, Department department) {
+    public Seller(Integer id, String name, String email, Date birthDate, Double baseSalary, Department department) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.birhtDate = birhtDate;
-        this.salary = salary;
+        this.birthDate = birthDate;
+        this.baseSalary = baseSalary;
         this.department = department;
     }
 
@@ -48,20 +48,20 @@ public class Seller {
         this.email = email;
     }
 
-    public Date getBirhtDate() {
-        return birhtDate;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirhtDate(Date birhtDate) {
-        this.birhtDate = birhtDate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public Double getSalary() {
-        return salary;
+    public Double getBaseSalary() {
+        return baseSalary;
     }
 
-    public void setSalary(Double salary) {
-        this.salary = salary;
+    public void setBaseSalary(Double baseSalary) {
+        this.baseSalary = baseSalary;
     }
 
     public Department getDepartment() {
@@ -86,13 +86,11 @@ public class Seller {
 
     @Override
     public String toString() {
-        return "Seller{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", birhtDate=" + birhtDate +
-                ", salary=" + salary +
-                ", department=" + department +
-                '}';
+        return "Seller [Id: " + id +
+                ", Name: " + name +
+                ", Email: " + email +
+                ", BirthDate: " + birthDate +
+                ", Salary: " + String.format("%.2f", baseSalary) +
+                ", Department: " + department + "]";
     }
 }

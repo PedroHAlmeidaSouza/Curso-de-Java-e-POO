@@ -37,7 +37,53 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public List<Seller> findAll() {
-        return null;
+        // Representa o comando SQL pré-compilado
+        PreparedStatement st = null;
+
+        // Representa o resultado de uma consulta SQL
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "SELECT seller.*,department.Name as DepName "
+                            + "FROM seller INNER JOIN department "
+                            + "ON seller.DepartmentId = department.Id "
+                            + "ORDER BY Name");
+
+            // Executa a query no banco de dados
+            rs = st.executeQuery();
+
+            // Gera um HashMap para não gerar duplicidade ao apontar para o Seller associado
+            List<Seller> list = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            // Itera sobre os resultado encontrados no ResultSet
+            while (rs.next()) {
+                // Valida se no HashMap não existe um valor de DepartmentId já existente, caso não exista ele adiciona no Map
+                Department dep = map.get(rs.getInt("DepartmentId"));
+
+                // Se dep for igual a nulo significa que ele nao existe na lista do HashMap, ou seja, deve ser instanciado e adicionado a mesma posteriormente
+                if (dep == null) {
+                    // Somente para cada valor encontrado ele instancia um novo Department através do ResultSet
+                    dep = instantiateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+
+                Seller obj = instantiateSeller(rs, dep);
+
+                // Adiciona os objetos Seller encontrados à lista de retorno
+                list.add(obj);
+            }
+            return list;
+        }
+        catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            // Fecha as conexões
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
 
     @Override

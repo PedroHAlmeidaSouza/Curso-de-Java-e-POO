@@ -33,9 +33,18 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     @Override
+    public List<Seller> findAll() {
+        return null;
+    }
+
+    @Override
     public Seller findById(Integer id) {
+        // Representa o comando SQL pré-compilado
         PreparedStatement st = null;
+
+        // Representa o resultado de uma consulta SQL
         ResultSet rs = null;
+
         try {
             st = conn.prepareStatement(
                     "SELECT seller.*,department.Name as DepName "
@@ -43,20 +52,16 @@ public class SellerDaoJDBC implements SellerDao {
                             + "ON seller.DepartmentId = department.Id "
                             + "WHERE seller.Id = ?");
 
+            // Define o valor Id no 1o ? da query como um inteiro, usado para indicar o Id do departamento que será consultado
             st.setInt(1, id);
+
+            // Executa a query no banco de dados
             rs = st.executeQuery();
+
+            // Itera sobre as linhas do ResultSet instânciando os departamentos encontrados
             if (rs.next()) {
-                Department dep = new Department();
-                dep.setId(rs.getInt("DepartmentId"));
-                dep.setName(rs.getString("DepName"));
-                Seller obj = new Seller();
-                obj.setId(rs.getInt("Id"));
-                obj.setName(rs.getString("Name"));
-                obj.setEmail(rs.getString("Email"));
-                obj.setBaseSalary(rs.getDouble("BaseSalary"));
-                obj.setBirthDate(rs.getDate("BirthDate"));
-                obj.setDepartment(dep);
-                return obj;
+                Department dep = instantiateDepartment(rs);
+                return instantiateSeller(rs, dep);
             }
             return null;
         }
@@ -64,13 +69,29 @@ public class SellerDaoJDBC implements SellerDao {
             throw new DbException(e.getMessage());
         }
         finally {
+            // Fecha as conexões
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }
     }
 
-    @Override
-    public List<Seller> findAll() {
-        return null;
+    // Método privado para gerar instancias de Seller
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+        Seller obj =new Seller();
+        obj.setId(rs.getInt("Id"));
+        obj.setName(rs.getString("Name"));
+        obj.setEmail(rs.getString("Email"));
+        obj.setBaseSalary(rs.getDouble("BaseSalary"));
+        obj.setBirthDate(rs.getDate("BirthDate"));
+        obj.setDepartment(dep);
+        return obj;
+    }
+
+    // Método privado para gerar instancias de Departament
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        Department dep = new Department();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("DepName"));
+        return dep;
     }
 }

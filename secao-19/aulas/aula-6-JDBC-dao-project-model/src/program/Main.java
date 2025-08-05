@@ -6,6 +6,7 @@ import model.entities.Department;
 import model.entities.Seller;
 
 import java.util.Date;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -44,6 +45,17 @@ public class Main {
         seller.setName("Martha Waine");
         sellerDao.update(seller);
         System.out.println("Update completed!");
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println();
+        // Deleta um Seller
+        System.out.println("=== TESTE 6: Seller delete ===");
+        System.out.print("Enter the seller id to be deleted: ");
+        sellerDao.deleteById(sc.nextInt());
+        System.out.println("Delete completed!");
+
+        sc.close();
 
     }
 }

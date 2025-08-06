@@ -34,7 +34,7 @@ public class SellerDaoJDBC implements SellerDao {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeStatement(st);
+            closeResources(st);
         }
     }
 
@@ -61,7 +61,7 @@ public class SellerDaoJDBC implements SellerDao {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeStatement(st);
+            closeResources(st);
         }
     }
 
@@ -99,7 +99,7 @@ public class SellerDaoJDBC implements SellerDao {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeStatement(st);
+            closeResources(st);
         }
     }
 
@@ -133,8 +133,7 @@ public class SellerDaoJDBC implements SellerDao {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeStatement(st);
-            DB.closeResultSet(rs);
+            closeResources(st, rs);
         }
     }
 
@@ -159,6 +158,7 @@ public class SellerDaoJDBC implements SellerDao {
             Map<Integer, Department> map = new HashMap<>();
 
             while (rs.next()) {
+                // Valida linha a linha o DepartmentId existente dentro do HashMap evitando duplicidade
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
                 if (dep == null) {
@@ -205,6 +205,10 @@ public class SellerDaoJDBC implements SellerDao {
         } finally {
             closeResources(st, rs);
         }
+    }
+
+    private void closeResources(PreparedStatement statement) {
+        DB.closeStatement(statement);
     }
 
     private void closeResources(PreparedStatement statement, ResultSet resultSet) {

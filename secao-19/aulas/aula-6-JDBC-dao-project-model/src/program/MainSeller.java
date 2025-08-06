@@ -8,14 +8,14 @@ import model.entities.Seller;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
+public class MainSeller {
     public static void main(String[] args) {
 
         // Retorna uma instanciação da minha implementação que me da acesso as operações
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
         System.out.println();
-        // Realizo uma busca por sellerID e retorno um objeto Seller
+        // Realizo uma busca por sellerId e retorno um objeto Seller
         System.out.println("=== TESTE 1: Seller findById ===");
         Seller seller = sellerDao.findById(1);
         System.out.println(seller);
@@ -56,6 +56,5 @@ public class Main {
         System.out.println("Delete completed!");
 
         sc.close();
-
     }
 }

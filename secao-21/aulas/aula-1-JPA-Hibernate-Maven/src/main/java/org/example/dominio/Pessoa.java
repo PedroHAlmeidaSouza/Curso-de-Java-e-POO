@@ -1,7 +1,12 @@
 package org.example.dominio;
 
+import javax.persistence.*;
+
+@Entity
 public class Pessoa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String email;
